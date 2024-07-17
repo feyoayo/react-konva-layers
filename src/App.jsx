@@ -38,12 +38,6 @@ function App() {
           height: img.height,
         },
       },
-      {
-        isHidden: false,
-        name: "Avatar",
-        component: AvatarLayer,
-        props: {},
-      },
     ]);
   }, [img]);
 
@@ -73,6 +67,17 @@ function App() {
     setPoints([]);
   };
 
+  const onAddAvatar = () => {
+    addLayers([
+      {
+        isHidden: false,
+        name: "Avatar",
+        component: AvatarLayer,
+        props: {},
+      },
+    ]);
+  };
+
   const calculateTopLeftCorner = (points) => {
     const minX = Math.min(...points.map((p) => p.x));
     const minY = Math.min(...points.map((p) => p.y));
@@ -81,9 +86,6 @@ function App() {
 
   return (
     <>
-      <button onClick={onDownload} type={"button"}>
-        Dowload
-      </button>
       <div
         style={{
           display: "flex",
@@ -94,13 +96,14 @@ function App() {
         <div>
           {/*<LasoSelect setClippedImg={setClippedImg} />*/}
 
+          <h4>Original image. Lasso here</h4>
           <ReactLassoSelect
             value={points}
             src={"/img.png"}
             onChange={(value) => {
               setPoints(value);
             }}
-            imageStyle={{ width: "600px", height: "400px" }}
+            imageStyle={{ width: "900px", height: "600px" }}
             onComplete={(value) => {
               if (!value.length) return;
               getCanvas("/img.png", value, (err, canvas) => {
@@ -124,6 +127,16 @@ function App() {
 
         <div
           style={{
+            marginTop: "2rem",
+          }}
+        >
+          <h4>Stage with layers</h4>
+          <button onClick={onAddAvatar} type={"button"}>
+            Add avatar
+          </button>
+        </div>
+        <div
+          style={{
             maxWidth: window.innerWidth,
             maxHeight: window.innerHeight,
             overflow: "auto",
@@ -139,6 +152,9 @@ function App() {
           </Stage>
         </div>
       </div>
+      <button onClick={onDownload} type={"button"}>
+        Dowload assets
+      </button>
     </>
   );
 }
